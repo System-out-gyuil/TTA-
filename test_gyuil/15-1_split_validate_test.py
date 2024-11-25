@@ -11,7 +11,7 @@ def makedirs(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-# 분리할 원본 json 파일 경로
+# 분리할 output json 파일 경로
 with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\conversion_data\\15-1_output_data_test_new_4.json', 'r', encoding='utf-8') as f:
     datas = json.loads(f.read())
 
@@ -65,7 +65,7 @@ for data in tqdm(datas):
     qa_len_check = 1 <= len(qa) <= 999
     # text_an (1~999)
     an_len_check = 1 <= len(an) <= 999
-    # 문장_noChange 제거
+    # 문장_noChange 제외
     class_name_check = not class_name == '문장_noChange'
 
     # source_data_info
@@ -112,6 +112,9 @@ for data in tqdm(datas):
     elif '중등_공통학년' in grade:
         path += '09.중등 공통학년\\'
 
+    else :
+        path += '98.경로 지정필요\\'
+
     # noChange 개수 확인용
     if not class_name_check:
         nochange_num += 1
@@ -131,6 +134,7 @@ for data in tqdm(datas):
     else :
         failed_num += 1
         
+        # 검사 통과 못한 데이터가 들어갈 경로
         path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\test_gyuil\\15-1_split_test\\99.비정상 데이터\\'
         makedirs(path)
 

@@ -14,11 +14,12 @@ grade_num_mapping = {
     '초등_4': '02.',
     '초등_5': '03.',
     '초등_6': '04.',
-    '중등_1': '05.',
-    '중등_2': '06.',
-    '중등_3': '07.',
-    '고등_1': '08.',
-    '중등_공통학년': '09.',
+    '중등_1': '06.',
+    '중등_2': '05.',
+    '중등_3': '08.',
+    '고등_1': '09.',
+    '고등_2': '10.',
+    '중등_공통학년': '05.',
 }
 
 subject_num_mapping = {
@@ -128,7 +129,7 @@ def text_img_split(isTXT, path, text_num, img_num):
     return path, text_num, img_num
 
 # 분리할 output json 파일 경로로 불러오기
-with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\conversion_data_new\\15-1_add_expansion_cleaned.json', 'r', encoding='utf-8') as f:
+with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\conversion_data_new\\15-1_output_data_new.json', 'r', encoding='utf-8') as f:
     datas = json.loads(f.read())
 
 for data in tqdm(datas):
@@ -190,8 +191,8 @@ for data in tqdm(datas):
         makedirs(path)
         # list.append(data)
         # json 파일 생성
-        with open(path+title+file_type, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+        # with open(path+title+file_type, 'w', encoding='utf-8') as f:
+        #     json.dump(data, f, indent=4, ensure_ascii=False)
         
     
     # 유효성 검사 통과 못한 데이터들
@@ -203,14 +204,11 @@ for data in tqdm(datas):
         makedirs(path)
 
         # json 파일 생성
-        with open(path+title+file_type, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+        # with open(path+title+file_type, 'w', encoding='utf-8') as f:
+        #     json.dump(data, f, indent=4, ensure_ascii=False)
 
 print(f'정상 데이터 개수: {num}')
 print(f'비정상 데이터 개수: {failed_num}')
 print(f'총합 데이터 개수: {num + failed_num}\n')
 print(f'text 개수: {text_num}')
 print(f'img 개수: {img_num}')
-
-# with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\test_gyuil\\test2.json', 'w', encoding='utf-8') as f:
-#     json.dump(list, f, indent=4, ensure_ascii=False)

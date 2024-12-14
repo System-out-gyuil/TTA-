@@ -27,19 +27,22 @@ def find_grade(source_name, school, grade, path):
         path += f'04.{school}학교 {grade}학년\\'
 
     elif '중등_1' in source_name:
-        path += f'05.중학교 {grade}학년\\'
-
-    elif '중등_2' in source_name:
         path += f'06.중학교 {grade}학년\\'
 
-    elif '중등_3' in source_name:
+    elif '중등_2' in source_name:
         path += f'07.중학교 {grade}학년\\'
 
+    elif '중등_3' in source_name:
+        path += f'08.중학교 {grade}학년\\'
+
     elif '고등_1' in source_name:
-        path += f'08.{school}학교 {grade}학년\\'
+        path += f'09.{school}학교 {grade}학년\\'
+        
+    elif '고등_2' in source_name:
+        path += f'10.{school}학교 {grade}학년\\'
 
     elif'중등_공통학년' in source_name:
-        path += f'09.중학교 공통학년\\'
+        path += f'05.중학교 공통학년\\'
 
     # 학년 표시가 안되어있거나 안맞는 경우
     else :

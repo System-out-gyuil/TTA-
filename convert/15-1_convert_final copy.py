@@ -1,6 +1,5 @@
 import os
 import json
-from tqdm import tqdm
 
 # 데이터 구분번호 고정 값
 data_category = "S1"
@@ -107,6 +106,12 @@ def process_label_data(label_data):
         # 문자열 끝의 공백 제거
         text_description = text_description.strip()
 
+        # print(f'bounding: {bounding_boxes}')
+        # print(f'description: {text_description}')
+        # print(f'qa: {text_qa}')
+        # print(f'an: {text_an}\n')
+
+
         # 각 라벨 항목을 딕셔너리에 저장 (learning_data_name 나중에 채워질 예정)
         label_dict[data_id] = {
             "learning_data_info": {
@@ -159,8 +164,6 @@ def process_refine_data(refine_data):
             for meta in metaDatas:
                 if meta.get("name") == "성취기준":
                     achievement_standard_2015 = meta.get("value", [])
-                    if achievement_standard_2015 == "":
-                        achievement_standard_2015 = [""]
                 # 2009와 2022 성취기준도 설정 가능
 
                 # 2009의 데이터에 빈값 존재
@@ -169,42 +172,12 @@ def process_refine_data(refine_data):
                     achievement_standard_2009 = meta.get("value", [])
                 if meta.get("name") == "2022 성취기준":
                     achievement_standard_2022 = meta.get("value", [])
-                    if achievement_standard_2022 == "":
-                        achievement_standard_2022 = [""]
                 # 성취기준 매핑값을 2022_achievement_standard에 설정
                 if meta.get("name") == "성취기준 매핑값":
                     achievement_standard_2022 = meta.get("value", [])
 
-
-
-
             # 파일명 변환
             converted_file_name = convert_filename(school, grade, subject, data_type)
-
-            if achievement_standard_2009 == "":
-                
-                source_info = {
-                    "source_data_name": converted_file_name,
-                    "2009_achievement_standard": [achievement_standard_2009],
-                    "2015_achievement_standard": achievement_standard_2015,
-                    "2022_achievement_standard": achievement_standard_2022 # 2022 성취기준 매핑값 추가
-                    }
-            
-            elif achievement_standard_2015 =="":
-                source_info = {
-                    "source_data_name": converted_file_name,
-                    "2009_achievement_standard": achievement_standard_2009,
-                    "2015_achievement_standard": [achievement_standard_2015],
-                    "2022_achievement_standard": achievement_standard_2022 # 2022 성취기준 매핑값 추가
-                    }
-                
-            elif achievement_standard_2022 =="":
-                source_info = {
-                    "source_data_name": converted_file_name,
-                    "2009_achievement_standard": achievement_standard_2009,
-                    "2015_achievement_standard": achievement_standard_2015,
-                    "2022_achievement_standard": [achievement_standard_2022] # 2022 성취기준 매핑값 추가
-                    }
 
             # 필요 데이터 딕셔너리에 저장
             refine_dict[data_id] = {
@@ -219,21 +192,31 @@ def process_refine_data(refine_data):
                     "subject": subject,
                     "revision_year": revision_year  # revision_year 추가
                 },
-                "source_data_info": source_info
+                "source_data_info": {
+                    "source_data_name": converted_file_name,
+                    "2009_achievement_standard": achievement_standard_2009,
+                    "2015_achievement_standard": achievement_standard_2015,
+                    "2022_achievement_standard": achievement_standard_2022  # 2022 성취기준 매핑값 추가
+                }
             }
+
+            # print(f'data: {date}')
+            # print(f'school: {school}')
+            # print(f'subject: {subject}')
+            # print(f'2009: {achievement_standard_2009}')
+            # print(f'2015: {achievement_standard_2015}')
+            # print(f'2022: {achievement_standard_2022}\n')
+
     return refine_dict
 
 
 # 병합 함수 및 최종 JSON 생성
 def merge_data(label_dict, refine_dict):
-
     merged_data = []
     num = 0
 
     # 라벨 데이터를 순회하며 리파인 데이터와 병합
-    for data_id, label_info in tqdm(label_dict.items()):
-
-
+    for data_id, label_info in label_dict.items():
         if data_id in refine_dict:
             # 리파인 데이터가 있을 경우 병합
             source_data_name = refine_dict[data_id]["source_data_info"]["source_data_name"]
@@ -246,6 +229,13 @@ def merge_data(label_dict, refine_dict):
             }
 
             num += 1
+
+        else:
+            # 리파인 데이터가 없으면 라벨 데이터만 사용
+            # combined_info = {
+            #     "learning_data_info": label_info["learning_data_info"]
+            # }
+            pass
 
         merged_data.append(combined_info)
 
@@ -269,14 +259,14 @@ def generate_final_json(label_file, refine_file):
     final_data = merge_data(label_dict, refine_dict)
 
     # 최종 데이터를 JSON 파일로 저장
-    with open('15-1_output_data_1214_new2.json', 'w', encoding='utf-8') as f_final:
+    with open('15-1_output_data_test_new_4.json', 'w', encoding='utf-8') as f_final:
         json.dump(final_data, f_final, indent=4, ensure_ascii=False)
 
     print("JSON file")
 
 
 # 호출하여 파일을 처리
-label_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json_1214\\2024-nia15-1-label-new1.json'
-refine_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json_1214\\2024-nia15-1-refine-new2.json'
+label_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json_1214\\2024-nia15-1-label-new.json'
+refine_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json_1214\\2024-nia15-1-refine-new.json'
 
 generate_final_json(label_file_path, refine_file_path)

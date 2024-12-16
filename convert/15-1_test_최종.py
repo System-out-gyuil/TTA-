@@ -177,6 +177,31 @@ def process_refine_data(refine_data):
             # 파일명 변환
             converted_file_name = convert_filename(school, grade, subject, data_type)
 
+            if achievement_standard_2009 == "":
+                
+                source_info = {
+                    "source_data_name": converted_file_name,
+                    "2009_achievement_standard": [achievement_standard_2009],
+                    "2015_achievement_standard": achievement_standard_2015,
+                    "2022_achievement_standard": achievement_standard_2022 # 2022 성취기준 매핑값 추가
+                    }
+            
+            elif achievement_standard_2015 =="":
+                source_info = {
+                    "source_data_name": converted_file_name,
+                    "2009_achievement_standard": achievement_standard_2009,
+                    "2015_achievement_standard": [achievement_standard_2015],
+                    "2022_achievement_standard": achievement_standard_2022 # 2022 성취기준 매핑값 추가
+                    }
+                
+            elif achievement_standard_2022 =="":
+                source_info = {
+                    "source_data_name": converted_file_name,
+                    "2009_achievement_standard": achievement_standard_2009,
+                    "2015_achievement_standard": achievement_standard_2015,
+                    "2022_achievement_standard": [achievement_standard_2022] # 2022 성취기준 매핑값 추가
+                    }
+
             # 필요 데이터 딕셔너리에 저장
             refine_dict[data_id] = {
                 "raw_data_info": {
@@ -190,12 +215,7 @@ def process_refine_data(refine_data):
                     "subject": subject,
                     "revision_year": revision_year  # revision_year 추가
                 },
-                "source_data_info": {
-                    "source_data_name": converted_file_name,
-                    "2009_achievement_standard": achievement_standard_2009,
-                    "2015_achievement_standard": achievement_standard_2015,
-                    "2022_achievement_standard": achievement_standard_2022  # 2022 성취기준 매핑값 추가
-                }
+                "source_data_info": source_info
             }
     return refine_dict
 
@@ -217,16 +237,13 @@ def merge_data(label_dict, refine_dict):
                 "source_data_info": refine_dict[data_id]["source_data_info"],
                 "learning_data_info": label_info["learning_data_info"]
             }
+        
+        # else :
+        #     print(data_id)
 
             num += 1
 
-        else:
-            # 리파인 데이터가 없으면 라벨 데이터만 사용
-            combined_info = {
-                "learning_data_info": label_info["learning_data_info"]
-            }
-
-        merged_data.append(combined_info)
+            merged_data.append(combined_info)
 
     # print(num)
     return merged_data
@@ -248,14 +265,14 @@ def generate_final_json(label_file, refine_file):
     final_data = merge_data(label_dict, refine_dict)
 
     # 최종 데이터를 JSON 파일로 저장
-    # with open('15-1_output_data_test_new_4.json', 'w', encoding='utf-8') as f_final:
-    #     json.dump(final_data, f_final, indent=4, ensure_ascii=False)
+    with open('15-1_output_data_1216_3.json', 'w', encoding='utf-8') as f_final:
+        json.dump(final_data, f_final, indent=4, ensure_ascii=False)
 
     # print("JSON file")
 
 
 # 호출하여 파일을 처리
-label_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json\\2024-nia15-1-label-new.json'
-refine_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json\\2024-nia15-1-refine-new2.json'
+label_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json_1214\\2024-nia15-1-label-new1.json'
+refine_file_path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\2024-nia-label_refine_json_1214\\2024-nia15-1-refine-new2.json'
 
 generate_final_json(label_file_path, refine_file_path)

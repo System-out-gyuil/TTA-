@@ -2,7 +2,7 @@ import os
 import json
 from tqdm import tqdm
 
-dir_path = "C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\15-2"
+dir_path = "C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\문장_noChange"
 img_path_list = []
 
 for (root, directories, files) in os.walk(dir_path):
@@ -18,15 +18,17 @@ for (root, directories, files) in os.walk(dir_path):
 
 os.close
 
-print(len(img_path_list))
+# print(len(img_path_list))
 
-with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\conversion_data_new\\15-2_output_data_new.json', 'r', encoding='utf-8') as f:
+with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\15-1_output_data_1214_new.json', 'r', encoding='utf-8') as f:
     datas = json.loads(f.read())
 
 for data in tqdm(datas):
 
     raw_data_info = data.get('raw_data_info')
     source_data_info = data.get('source_data_info')
+
+    # print(raw_data_info)
 
     raw_data_name = raw_data_info.get('raw_data_name')
 

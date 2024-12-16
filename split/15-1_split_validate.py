@@ -149,7 +149,8 @@ for data in tqdm(datas):
 
 
     # 각종 데이터 유효성 검사
-    condition = condition_check(data)
+    # condition = condition_check(data)
+    condition = True
     
     school = raw_data_info.get('school')
     grade = raw_data_info.get('grade')

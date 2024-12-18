@@ -3,11 +3,11 @@ import os
 from tqdm import tqdm
 
 # json파일 경로
-with open("C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\15-1_output_data_1216_8.json", "r", encoding="utf-8") as f:
+with open("C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\difinition_make\\2024-nia15-1-make-5_1216.json", "r", encoding="utf-8") as f:
     makes = json.loads(f.read())
 
 # 원천데이터(이미지파일) 경로
-dir_path = f"C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\문단8"
+dir_path = f"D:\\제출용\\문단\\2024-nia15-1-make-5_1"
 img_path_list = []
 
 # 경로에 아래에 있는 있는 모든 파일 가져오기
@@ -26,4 +26,4 @@ for path in tqdm(img_path_list):
 
     for make in makes:
         if make.get('raw_data_info').get('raw_data_name') == img_name:
-            os.rename(path, f'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\문단2\\{make.get('source_data_info').get('source_data_name')}.png')
+            os.rename(path, f'{dir_path}\\{make.get('source_data_info').get('source_data_name')}.png')

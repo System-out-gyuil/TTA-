@@ -15,7 +15,7 @@ grade_num_mapping = {
     '중등_3': '08.중학교',
     '고등_1': '09.고등학교',
     '고등_2': '10.고등학교',
-    '중등_공통학년': '05.중학교(공통)',
+    '중등_공통': '05.중학교(공통)',
 }
 
 subject_num_mapping = {
@@ -39,7 +39,7 @@ def makedirs(path):
 def img_find_grade(school_num, grade):
     grade_num = grade_num_mapping.get(school_num)
 
-    if grade == '공통학년':
+    if grade == '공통':
         path = grade_num+'\\'
     else:
         # ex) 06.중학교 1학년\\
@@ -48,41 +48,7 @@ def img_find_grade(school_num, grade):
     return path
 
 # 원천데이터(이미지파일) 경로
-dir_path = "C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\문장_noChange2"
-img_path_list = []
-
-# 경로에 아래에 있는 있는 모든 파일 가져오기
-for (root, directories, files) in os.walk(dir_path):
-    for d in directories:
-        d_path = os.path.join(root, d)
-
-    for file in files:
-        file_path = os.path.join(root, file)
-        img_path_list.append(file_path)
-
-with open('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\15-1_output_data_1216_3.json', 'r', encoding='utf-8') as f:
-    datas = json.loads(f.read())
-
-for data in tqdm(datas):
-
-    raw_data_info = data.get('raw_data_info')
-    source_data_info = data.get('source_data_info')
-
-    raw_data_name = raw_data_info.get('raw_data_name')
-
-    source_data_name = source_data_info.get('source_data_name')
-
-    # 원천데이터(이미지)파일명 ex)981d05df-243f-4e75-a27e-743e5d0cceff 과 raw_data_name을 비교해서 같을경우
-    # (원천데이터 파일명이 json파일에 있는 파일인 경우)
-    for img_path in img_path_list:
-        if img_path.split('\\')[-1][0:-4] == raw_data_name:
-
-            path_raw_name = f'{dir_path}\\{source_data_name}.png'
-
-            os.rename(img_path, path_raw_name)
-
-os.close
-
+dir_path = "D:\\제출용\\문단\\2024-nia15-1-make-5_2"
 img_path_list = []
 
 # 경로에 아래에 있는 있는 모든 파일 가져오기
@@ -95,13 +61,13 @@ for (root, directories, files) in os.walk(dir_path):
         img_path_list.append(file_path)
 
 # S1_중등_1_영어_TXT_048685
-for img_path in img_path_list:
+for img_path in tqdm(img_path_list):
 
     # 그냥 갯수세기
     num += 1
     
     # 파일이 저장될 경로
-    path = 'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\15-1 원천-2\\'
+    path = 'D:\\제출용\\문단_1218\\paragraph_make_5\\'
 
     # C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\img_test\\S1_중등_1_영어_TXT_048685.png 에서
     # S1_중등_1_영어_TXT_048685만 가져옴
@@ -109,6 +75,9 @@ for img_path in img_path_list:
 
     # _ 기준으로 split. ex)[S1, 중등, 1, 영어, TXT, 048685]
     img_source_name_split = img_source_name.split('_')
+
+    # print(img_source_name_split)
+    
 
     # 두번째와 세번째 인덱스만 가져옴. ex)중등_1
     school_num = f'{img_source_name_split[1]}_{img_source_name_split[2]}'

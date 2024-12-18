@@ -48,7 +48,7 @@ def img_find_grade(school_num, grade):
     return path
 
 # 원천데이터(이미지파일) 경로
-dir_path = "D:\\제출용\\문단\\2024-nia15-1-make-5"
+dir_path = "D:\\제출용\\문단\\2024-nia15-1-make-5_3"
 img_path_list = []
 
 # 경로에 아래에 있는 있는 모든 파일 가져오기

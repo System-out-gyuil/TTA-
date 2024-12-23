@@ -25,7 +25,8 @@ learning_dict = {}
 list = []
 failed_list = []
 
-num_count = 8000000
+# 파일명에 붙을 인덱스 시작번호
+num_count = 0
 
 for make in makes:
     datas = make.get("datas")
@@ -52,31 +53,24 @@ for make in makes:
             if index == 0:
                 # 출판사
                 publisher = value
-
             elif index == 1:
                 # 출판년월
                 date = value
-
             elif index == 2:
                 # 개정년도
                 revision_year = value
-
             elif index == 3:
                 # 학교
                 school = value
-
             elif index == 4:
                 # 과목
                 subject = value
-
             elif index == 5:
                 # 학년
                 grade_num = value
-
             elif index == 6:
                 # 학기
                 term = value
-
             elif index == 9:
                 # 획득일
                 date2 = value
@@ -84,7 +78,7 @@ for make in makes:
         if publisher == '유니바':
             publisher = '2차 저작'
 
-        # 2024.08을 2024-08-03으로 변경
+        # 2024.08을 2024-08-03으로 변경(json에 일자가 없음)
         ran_date = random.randint(1, 30)
         ran_data_str = f"{ran_date:02d}"
 
@@ -95,7 +89,6 @@ for make in makes:
         date2 = date2.replace('/', '-')
 
         grade = f'{grade_num}학년'
-
 
         if term != '공통':
             term = f'{term}학기'
@@ -224,25 +217,7 @@ for make in makes:
         # 합쳐진 각각의 dict를 list에 추가
         list.append(dict)
 
-        # for path in tqdm(img_path_list):
-        #     img_path = path.split('\\')[-1]
-        #     img_name = img_path.split('.')[0]
-        #     # 파일명 ex)국어_고등학교_1학년_table_0_png_00.png 과 datas의 id값이 같을 경우
-        #     if img_name == id:
-        #         # 이름 바꾸고 다시 저장될 경로
-        #         source_path = f'C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\img_crop\\{make_path}\\{source_data_name}.png'
-
-        #         os.rename(path, source_path)
-
-        #     else :
-        #         print(f'img_name: {img_name}\n id: {id}')
-
-
 # json 파일 저장
 with open("C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\difinition_make\\2024-nia15-1-make-8_1216_3.json", 'w', encoding='utf-8') as f:
     json.dump(list, f, indent=4, ensure_ascii=False)
-
-# failed_df = pd.DataFrame(failed_list)
-# # id값과 파일명이 일치하지 않는 데이터 excel로 저장
-# failed_df.to_excel('C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\15-1-make_failed-1.xlsx', index=False)
     

@@ -1,4 +1,7 @@
 import json
+import os
+from tqdm import tqdm
+import pandas as pd
 import random
 
 # make json파일 경로
@@ -130,7 +133,7 @@ for make in makes:
         map_type = type_mapping.get(data_type)
 
 
-        # id값에 들어간 데이터 순서가 파일마다 달라서 in으로 사용
+        # id값에 들어간 데이터 순서가 파일마다 달라서 포함된으로 사용
         if 'text' in id:
             class_name = "텍스트"
         
@@ -154,6 +157,8 @@ for make in makes:
 
         # S1_중등_1_영어_TXT_048685
         source_data_name = f"S1_{school}_{grade_num}_{subject}_{map_type}_{num_count_str}"
+
+        # print(source_data_name)
 
         if grade == '2학년':
             grade = '공통'
@@ -212,7 +217,7 @@ for make in makes:
         # 합쳐진 각각의 dict를 list에 추가
         list.append(dict)
 
-# json 파일로 저장
+# json 파일 저장
 with open("C:\\Users\\admin\\Desktop\\syntax_check_converter - 복사본\\difinition_make\\2024-nia15-1-make-8_1216_3.json", 'w', encoding='utf-8') as f:
     json.dump(list, f, indent=4, ensure_ascii=False)
     
